@@ -1,8 +1,7 @@
 // Step: 1, import useEffect
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "../styles/pages/Home.css";
-import "../styles/components/MealCard.css"
+import "../styles/components/MealCard.css";
 
 // Meal API: https://www.themealdb.com/api/json/v1/1/random.php
 
@@ -19,23 +18,22 @@ function Home() {
   // useEffect waxay u baahantahay array ebar ah (dependancy array)
 
   useEffect(() => {
-    // Create an async function that calls the API\
+    // Create an async function that calls the API
 
     const fetchRandomMeal = async () => {
       try {
         setLoading(true);
-        await axios
-          .get("https://www.themealdb.com/api/json/v1/1/random.php")
-          .then((response) => {
-            setMeal(response.data.meals[0]);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setError(err.message);
-            setLoading(false);
-          });
-      } catch (error) {
-        console.log(error);
+
+        const response = await fetch(
+          "https://www.themealdb.com/api/json/v1/1/random.php"
+        );
+
+        const data = await response.json();
+
+        setMeal(data.meals[0]);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
         setLoading(false);
       }
     };
