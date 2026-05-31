@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import MealCard from "../components/MealCard";
 import "../styles/pages/Healthy.css";
 
@@ -13,10 +12,14 @@ const Healthy = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(
+
+        const response = await fetch(
           "https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast"
         );
-        setMeals(response.data.meals || []);
+
+        const data = await response.json();
+
+        setMeals(data.meals || []);
       } catch (err) {
         setError("Failed to load meals. Please try again.");
         console.error(err);
@@ -52,13 +55,13 @@ const Healthy = () => {
 
       <div className="meals-grid">
         {meals.length > 0 ? (
-            meals.map((meal) => (
-                <div className="meal-item" key={meal.idMeal}>
-                    <MealCard meal={meal} />
-                </div>
-            ))
+          meals.map((meal) => (
+            <div className="meal-item" key={meal.idMeal}>
+              <MealCard meal={meal} />
+            </div>
+          ))
         ) : (
-             <div className="no-meals">No meals found for this ingredient.</div>
+          <div className="no-meals">No meals found for this ingredient.</div>
         )}
       </div>
     </div>
